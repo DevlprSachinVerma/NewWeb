@@ -1,6 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for
 from supabase import create_client, Client
 
+# Supabase configuration
+SUPABASE_URL = "https://zhcipbwwskmneifittsc.supabase.co"  # Replace with your Supabase URL
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpoY2lwYnd3c2ttbmVpZml0dHNjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYxNTYyOTcsImV4cCI6MjA1MTczMjI5N30.CChd_lF5slA6Zfmo1I43Fcq0pew7pGi0tWOJROOIzi0"                    # Replace with your Supabase API Key
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -37,8 +41,9 @@ def submit():
     }).execute()
 
     # Handle response
-    if response.get('error'):
-        return f"Error: {response['error']}", 500
+    if not response.data:  # If `data` is empty, there's an issue
+        print("Error occurred:", response)
+        return "Error occurred while inserting data.", 500
     return render_template('submitted.html')
 
 # Run the Flask app
