@@ -1,7 +1,11 @@
 from flask import Flask, request, render_template, redirect, url_for
 from supabase import create_client, Client
+import os
 
-
+SUPABASE_URL = os.environ['url']
+SUPABASE_KEY =os.environ['key']
+# Initialize Supabase client
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Initialize Flask app
 app = Flask(__name__)
